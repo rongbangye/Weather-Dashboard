@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assests/css/style.css">
+  <title>Server-Side APIs Challenge: Weather Dashboard</title>
+</head>
+
+<body>
+  <!-- Main Body-->
+  <main class="main">
+    <div class="main_title">
+      <h1>Weather Dashboard</h1>
+    </div>
+    <div class="main_container">
+      <div class="main_leftContainer">
+        <div class="main_searchCity">
+          <h4>Search for a city</h4>
+          <form action="">
+            <input id="searchCityInput" type="text">
+            <button id="searchWeatherButton" onclick="searchWeather(event)">Search</button>
+          </form>
+        </div>
+        <div class="main_searchCityList">
+          <!-- <h3>San Jose</h3>
+          <h3>New York</h3>
+          <h3>Mexico</h3> -->
+        </div>
+      </div>
+      <div class="main_rightContainer">
+        <div class="main_cityWeather">
+          <h2 id="currentCityName"></h2>
+          <span class="currentDate"></span>
+          <!-- <span>Weather Icon</span> -->
+          <h6>Temperature: <span class="currentTemperature"></span> </h6>
+          <h6>Humidity: <span class="currentHumidity"></span> </h6>
+          <h6>Wind Speed: <span class="currentWindSpeed"></span> </h6>
+          <h6>UV index: <span class="currentUVIndex"></span> </h6>
+        </div>
+        <div class="main_forecast">
+          <day class="main_forecastTitle">
+            <h2>5-Day Forecast:</h2>
+          </day>
+          <div class="main_forecast5Days">
+            <div class="main_dayForecast">
+              <h3>8/16/19</h3>
+              <span>Weather Icon</span>
+              <h6>Temp: 86.84F</h6>
+              <h6>Humidity: 43%</h6>
+            </div>
+            <div class="main_dayForecast">
+              <h3>8/16/19</h3>
+              <span>Weather Icon</span>
+              <h6>Temp: 86.84F</h6>
+              <h6>Humidity: 43%</h6>
+            </div>
+            <div class="main_dayForecast">
+              <h3>8/16/19</h3>
+              <span>Weather Icon</span>
+              <h6>Temp: 86.84F</h6>
+              <h6>Humidity: 43%</h6>
+            </div>
+            <div class="main_dayForecast">
+              <h3>8/16/19</h3>
+              <span>Weather Icon</span>
+              <h6>Temp: 86.84F</h6>
+              <h6>Humidity: 43%</h6>
+            </div>
+            <div class="main_dayForecast">
+              <h3>8/16/19</h3>
+              <span>Weather Icon</span>
+              <h6>Temp: 86.84F</h6>
+              <h6>Humidity: 43%</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="./assests/js/script.js"></script>
+</body>
+
+</html>
