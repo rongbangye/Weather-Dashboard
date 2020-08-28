@@ -61,7 +61,22 @@ const updateUVandDate = data => {
   let currentUVIndex = document.querySelector(".currentUVIndex");
 
   currentDate.innerHTML = `(${now})`;
-  currentUVIndex.innerHTML = data.value;
+  if (data.value >= 8) {
+    currentUVIndex.classList.remove("background-yellow");
+    currentUVIndex.classList.remove("background-green");
+    currentUVIndex.classList.add("background-red");
+    currentUVIndex.innerHTML = data.value;
+  } else if (data.value < 8 && data.value >= 3) {
+    currentUVIndex.classList.remove("background-red");
+    currentUVIndex.classList.remove("background-green");
+    currentUVIndex.classList.add("background-yellow");
+    currentUVIndex.innerHTML = data.value;
+  } else {
+    currentUVIndex.classList.remove("background-yellow");
+    currentUVIndex.classList.remove("background-red");
+    currentUVIndex.classList.add("background-green");
+    currentUVIndex.innerHTML = data.value;
+  }
 };
 
 // Display 5 Day Forcast
