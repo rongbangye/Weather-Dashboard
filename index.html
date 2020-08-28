@@ -32,13 +32,15 @@
       </div>
       <div class="main_rightContainer">
         <div class="main_cityWeather">
-          <h2 id="currentCityName"></h2>
-          <span class="currentDate"></span>
+          <div class="cityWeahterTitle">
+            <h2 id="currentCityName"></h2>
+            <span class="currentDate"></span>
+          </div>
           <!-- <span>Weather Icon</span> -->
-          <h6>Temperature: <span class="currentTemperature"></span> </h6>
-          <h6>Humidity: <span class="currentHumidity"></span> </h6>
-          <h6>Wind Speed: <span class="currentWindSpeed"></span> </h6>
-          <h6>UV index: <span class="currentUVIndex"></span> </h6>
+          <h6>Temperature: <span class="currentTemperature"></span>°F</h6>
+          <h6>Humidity: <span class="currentHumidity"></span>%</h6>
+          <h6>Wind Speed: <span class="currentWindSpeed"></span>MPH</h6>
+          <h6>UV index: <span class="currentUVIndex"></span></h6>
         </div>
         <div class="main_forecast">
           <day class="main_forecastTitle">
@@ -48,32 +50,36 @@
             <div class="main_dayForecast">
               <h3 class="dayOne">8/16/19</h3>
               <span>Weather Icon</span>
-              <h6>Temp: <span class="dayOneTemp"></span></h6>
-              <h6>Humidity: <span class="dayOneHumidity"></span></h6>
+              <h6>Temp: <span class="dayOneTemp"></span>°F</h6>
+              <h6>Humidity: <span class="dayOneHumidity"></span>%</h6>
             </div>
+
             <div class="main_dayForecast">
-              <h3 class="dayTwo">8/16/19</h3>
+              <h3 class="dayTwo"></h3>
               <span>Weather Icon</span>
-              <h6 class="dayTwoTemp">Temp: 86.84F</h6>
-              <h6 class="dayTwoHumidity">Humidity: 43%</h6>
+              <h6>Temp: <span class="dayTwoTemp"></span>°F</h6>
+              <h6>Humidity: <span class="dayTwoHumidity"></span>%</h6>
             </div>
+
             <div class="main_dayForecast">
-              <h3 class="dayThree">8/16/19</h3>
+              <h3 class="dayThree"></h3>
               <span>Weather Icon</span>
-              <h6 class="dayThreeTemp">Temp: 86.84F</h6>
-              <h6 class="dayThreehumidity">Humidity: 43%</h6>
+              <h6>Temp: <span class="dayThreeTemp"></span>°F</h6>
+              <h6>Humidity: <span class="dayThreeHumidity"></span>%</h6>
             </div>
+
             <div class="main_dayForecast">
-              <h3 class="dayFour">8/16/19</h3>
+              <h3 class="dayFour"></h3>
               <span>Weather Icon</span>
-              <h6 class="dayFourTemp">Temp: 86.84F</h6>
-              <h6 class="dayFourHumidity">Humidity: 43%</h6>
+              <h6>Temp: <span class="dayFourTemp"></span>°F</h6>
+              <h6>Humidity: <span class="dayFourHumidity"></span>%</h6>
             </div>
+
             <div class="main_dayForecast">
-              <h3 class="dayFive">8/16/19</h3>
+              <h3 class="dayFive"></h3>
               <span>Weather Icon</span>
-              <h6 class="dayFiveTemp">Temp: 86.84F</h6>
-              <h6 class="dayFiveHumidity">Humidity: 43%</h6>
+              <h6>Temp: <span class="dayFiveTemp"></span>°F</h6>
+              <h6>Humidity: <span class="dayFiveHumidity"></span>%</h6>
             </div>
           </div>
         </div>
@@ -81,6 +87,8 @@
     </div>
   </main>
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="./assests/js/script.js"></script>
 </body>
 
