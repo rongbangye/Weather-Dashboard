@@ -2,7 +2,8 @@ let cities = [];
 
 const api = {
   key: "45706455bc2c4824123926c813998ea6",
-  base: "https://api.openweathermap.org/data/2.5/"
+  base: "https://api.openweathermap.org/data/2.5/",
+  baseImgURL: "http://openweathermap.org/img/wn/"
 };
 
 const getDateFormat = timeZoneOffSet => {
@@ -29,7 +30,8 @@ const convertDttoDate = dt => {
   return moment(dateTime).format("MM/DD/YYYY");
 };
 
-//  fetch data from weather API
+/** Fetch data from weather API */
+
 const fetchWeather = searchCityInput => {
   // this URL fetch to get the lat and lon: api.openweathermap.org/data/2.5/weather?q={city name}&appid={your api key}
   fetch(
@@ -51,7 +53,6 @@ const fetchWeather = searchCityInput => {
           return response.json();
         })
         .then(dataDays => {
-          console.log(dataDays);
           displayCurrentDateWeather(searchCityInput, dataDays);
           displayDaysForcast(dataDays);
         });
@@ -61,8 +62,10 @@ const fetchWeather = searchCityInput => {
     });
 };
 
-// Display Current Date Weather
+/** Display Current Date Weather */
+
 const displayCurrentDateWeather = (searchCityInput, dataDays) => {
+  console.log(dataDays);
   let currentDate = document.querySelector(".currentDate");
   let currentUVIndex = document.querySelector(".currentUVIndex");
 
@@ -72,12 +75,14 @@ const displayCurrentDateWeather = (searchCityInput, dataDays) => {
   let currTime = getDateFormat(dataDays.timezone_offset);
 
   let currentCityName = document.querySelector("#currentCityName");
+  let currentCondition = document.querySelector(".currentCodition");
   let currentTemperature = document.querySelector(".currentTemperature");
   let currentHumidity = document.querySelector(".currentHumidity");
   let currentWindSpeed = document.querySelector(".currentWindSpeed");
 
   if (searchCityInput) {
     currentCityName.innerHTML = searchCityInput;
+    currentCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.daily[0].weather[0].icon}.png" alt="weather condition">`;
     currentTemperature.innerHTML = currentDayWeather.temp.day;
     currentHumidity.innerHTML = currentDayWeather.humidity;
     currentWindSpeed.innerHTML = currentDayWeather["wind_speed"];
@@ -102,7 +107,8 @@ const displayCurrentDateWeather = (searchCityInput, dataDays) => {
   }
 };
 
-// Display future 5 Days Forcast
+/** Display future 5 Days Forcast */
+
 const displayDaysForcast = dataDays => {
   let dayOneTime = convertDttoDate(dataDays.daily[1].dt);
   let dayTwoTime = convertDttoDate(dataDays.daily[2].dt);
@@ -111,47 +117,58 @@ const displayDaysForcast = dataDays => {
   let dayFiveTime = convertDttoDate(dataDays.daily[5].dt);
 
   let dayOne = document.querySelector(".dayOne");
+  let dayOneCondition = document.querySelector(".dayOneCondition");
   let dayOneTemp = document.querySelector(".dayOneTemp");
   let dayOneHumidity = document.querySelector(".dayOneHumidity");
 
   let dayTwo = document.querySelector(".dayTwo");
+  let dayTwoCondition = document.querySelector(".dayTwoCondition");
   let dayTwoTemp = document.querySelector(".dayTwoTemp");
   let dayTwoHumidity = document.querySelector(".dayTwoHumidity");
 
   let dayThree = document.querySelector(".dayThree");
+  let dayThreeCondition = document.querySelector(".dayThreeCondition");
   let dayThreeTemp = document.querySelector(".dayThreeTemp");
   let dayThreeHumidity = document.querySelector(".dayThreeHumidity");
 
   let dayFour = document.querySelector(".dayFour");
+  let dayFourCondition = document.querySelector(".dayFourCondition");
   let dayFourTemp = document.querySelector(".dayFourTemp");
   let dayFourHumidity = document.querySelector(".dayFourHumidity");
 
   let dayFive = document.querySelector(".dayFive");
+  let dayFiveCondition = document.querySelector(".dayFiveCondition");
   let dayFiveTemp = document.querySelector(".dayFiveTemp");
   let dayFiveHumidity = document.querySelector(".dayFiveHumidity");
 
   dayOne.innerHTML = dayOneTime;
+  dayOneCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.daily[1].weather[0].icon}.png" alt="weather condition">`;
   dayOneTemp.innerHTML = dataDays.daily[1].temp.day;
   dayOneHumidity.innerHTML = dataDays.daily[1].humidity;
 
   dayTwo.innerHTML = dayTwoTime;
+  dayTwoCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.daily[2].weather[0].icon}.png" alt="weather condition">`;
   dayTwoTemp.innerHTML = dataDays.daily[2].temp.day;
   dayTwoHumidity.innerHTML = dataDays.daily[2].humidity;
 
   dayThree.innerHTML = dayThreeTime;
+  dayThreeCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.daily[3].weather[0].icon}.png" alt="weather condition">`;
   dayThreeTemp.innerHTML = dataDays.daily[3].temp.day;
   dayThreeHumidity.innerHTML = dataDays.daily[3].humidity;
 
   dayFour.innerHTML = dayFourTime;
+  dayFourCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.daily[4].weather[0].icon}.png" alt="weather condition">`;
   dayFourTemp.innerHTML = dataDays.daily[4].temp.day;
   dayFourHumidity.innerHTML = dataDays.daily[4].humidity;
 
   dayFive.innerHTML = dayFiveTime;
+  dayFiveCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.daily[5].weather[0].icon}.png" alt="weather condition">`;
   dayFiveTemp.innerHTML = dataDays.daily[5].temp.day;
   dayFiveHumidity.innerHTML = dataDays.daily[5].humidity;
 };
 
-// Display the current Weather
+/** Display the current Weather */
+
 const displayCurrentWeather = (searchCityInput, data) => {
   let currentCityName = document.querySelector("#currentCityName");
   let currentTemperature = document.querySelector(".currentTemperature");

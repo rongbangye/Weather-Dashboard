@@ -20,17 +20,17 @@ body {
 }
 
 .main {
-  background-color: #f3f5f6;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+  /* background-color: #f3f5f6; */
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px; */
   border-radius: 8px;
-  border: 1px solid white;
+  /* border: 1px solid white; */
   width: 880px;
   height: 410px;
   display: flex;
   justify-content: start;
   flex-direction: column;
   align-items: center;
-  box-shadow: rgba(129, 129, 129, 0.2) 0px 4px 9px;
+  /* box-shadow: rgba(129, 129, 129, 0.2) 0px 4px 9px; */
 }
 
 .main_container {
@@ -154,7 +154,7 @@ body {
 .main_dayForecast > h3,
 .main_dayForecast > span,
 .main_dayForecast > h6 {
-  padding: 10px 0;
+  padding: 2px 0;
 }
 
 .background-red {
