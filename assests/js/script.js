@@ -1,31 +1,37 @@
 let cities = [];
 
-const dt = 1598810400; // unix timestamp in seconds
-const timezone = 3600; // zone in seconds
-
-// moment.unix - Unix Timestamp (seconds)
-const dateTime = moment
-  .unix(dt)
-  .utc()
-  .add(timezone, "s");
-
-console.log(dateTime);
-
 const api = {
   key: "45706455bc2c4824123926c813998ea6",
   base: "https://api.openweathermap.org/data/2.5/"
 };
 
+const getDateFormat = timeZoneOffSet => {
+  // referece on stackoverflow: https://stackoverflow.com/questions/62690963/how-can-i-get-the-current-time-using-timezone-offset-using-moment-js
+  // Convert TimeZone to to Current Date in MM/DD/YYYY
+  const timezoneInMinutes = timeZoneOffSet / 60;
+  const currTime = moment()
+    .utcOffset(timezoneInMinutes)
+    .format("MM/DD/YYYY");
+
+  return currTime;
+};
+
+const convertDttoDate = dt => {
+  const currentDT = dt; // unix timestamp in seconds
+  const timezone = 3600; // zone in seconds
+
+  // moment.unix - Unix Timestamp (seconds)
+  const dateTime = moment
+    .unix(currentDT)
+    .utc()
+    .add(timezone, "s");
+
+  return moment(dateTime).format("MM/DD/YYYY");
+};
+
 //  fetch data from weather API
 const fetchWeather = searchCityInput => {
-  let API = "45706455bc2c4824123926c813998ea6";
-
-  // Current Day Weather URL: api.openweathermap.org/data/2.5/weather?q={city name}&appid={your api key}
-  // let API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${searchCityInput}&units=imperial&appid=${API}`;
-
-  // 5 Day URL:  api.openweathermap.org/data/2.5/forecast/daily?q={city name}&cnt={cnt}&appid={your api key}
-  // let API_URL_FORCAST = `https://api.openweathermap.org/data/2.5/forecast?q=${searchCityInput}&units=imperial&appid=${API}`;
-
+  // this URL fetch to get the lat and lon: api.openweathermap.org/data/2.5/weather?q={city name}&appid={your api key}
   fetch(
     `${api.base}weather?q=${searchCityInput}&units=imperial&appid=${api.key}`
   )
@@ -33,32 +39,20 @@ const fetchWeather = searchCityInput => {
       return response.json();
     })
     .then(data => {
-      let timezone = data.timezone;
+      // let timezone = data.timezone;
       let lon = data.coord.lon;
       let lat = data.coord.lat;
-      // UV index: http://api.openweathermap.org/data/2.5/uvi?appid={appid}&lat={lat}&lon={lon}
-      // let API_URL_CurrentDay = `http://api.openweathermap.org/data/2.5/uvi?appid=${API}&lat=${lat}&lon=${lon}`;
 
-      // Fetch UV index and date
-      fetch(`${api.base}uvi?appid=${api.key}&lat=${lat}&lon=${lon}`)
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          updateUVandDate(timezone, data);
-        });
-
-      displayCurrentWeather(searchCityInput, data);
-
-      // Fetch 5 Days Forcast
+      // 7 Days Forcast: https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
       fetch(
-        `${api.base}forecast?appid=${api.key}&q=${searchCityInput}&count=10`
+        `${api.base}onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&units=imperial&appid=${api.key}`
       )
         .then(response => {
           return response.json();
         })
         .then(dataDays => {
           console.log(dataDays);
+          displayCurrentDateWeather(searchCityInput, dataDays);
           displayDaysForcast(dataDays);
         });
     })
@@ -67,82 +61,94 @@ const fetchWeather = searchCityInput => {
     });
 };
 
-// Display UV and Current Date
-const updateUVandDate = (timezone, data) => {
-  // referece on stackoverflow: https://stackoverflow.com/questions/62690963/how-can-i-get-the-current-time-using-timezone-offset-using-moment-js
-  const timezoneInMinutes = timezone / 60;
-  const currTime = moment()
-    .utcOffset(timezoneInMinutes)
-    .format("MM/DD/YYYY");
-
+// Display Current Date Weather
+const displayCurrentDateWeather = (searchCityInput, dataDays) => {
   let currentDate = document.querySelector(".currentDate");
   let currentUVIndex = document.querySelector(".currentUVIndex");
 
+  let currentDayWeather = dataDays.daily[0];
+  let currentDayUVI = dataDays.daily[0].uvi;
+
+  let currTime = getDateFormat(dataDays.timezone_offset);
+
+  let currentCityName = document.querySelector("#currentCityName");
+  let currentTemperature = document.querySelector(".currentTemperature");
+  let currentHumidity = document.querySelector(".currentHumidity");
+  let currentWindSpeed = document.querySelector(".currentWindSpeed");
+
+  if (searchCityInput) {
+    currentCityName.innerHTML = searchCityInput;
+    currentTemperature.innerHTML = currentDayWeather.temp.day;
+    currentHumidity.innerHTML = currentDayWeather.humidity;
+    currentWindSpeed.innerHTML = currentDayWeather["wind_speed"];
+  }
+
   currentDate.innerHTML = `(${currTime})`;
-  if (data.value >= 8) {
+  if (currentDayUVI >= 8) {
     currentUVIndex.classList.remove("background-yellow");
     currentUVIndex.classList.remove("background-green");
     currentUVIndex.classList.add("background-red");
-    currentUVIndex.innerHTML = data.value;
-  } else if (data.value < 8 && data.value >= 3) {
+    currentUVIndex.innerHTML = currentDayUVI;
+  } else if (currentDayUVI < 8 && currentDayUVI >= 3) {
     currentUVIndex.classList.remove("background-red");
     currentUVIndex.classList.remove("background-green");
     currentUVIndex.classList.add("background-yellow");
-    currentUVIndex.innerHTML = data.value;
+    currentUVIndex.innerHTML = currentDayUVI;
   } else {
     currentUVIndex.classList.remove("background-yellow");
     currentUVIndex.classList.remove("background-red");
     currentUVIndex.classList.add("background-green");
-    currentUVIndex.innerHTML = data.value;
+    currentUVIndex.innerHTML = currentDayUVI;
   }
 };
 
-// Display 5 Day Forcast
+// Display future 5 Days Forcast
 const displayDaysForcast = dataDays => {
-  let dataDayOne = dataDays.list[6];
+  let dayOneTime = convertDttoDate(dataDays.daily[1].dt);
+  let dayTwoTime = convertDttoDate(dataDays.daily[2].dt);
+  let dayThreeTime = convertDttoDate(dataDays.daily[3].dt);
+  let dayFourTime = convertDttoDate(dataDays.daily[4].dt);
+  let dayFiveTime = convertDttoDate(dataDays.daily[5].dt);
+
   let dayOne = document.querySelector(".dayOne");
   let dayOneTemp = document.querySelector(".dayOneTemp");
   let dayOneHumidity = document.querySelector(".dayOneHumidity");
 
-  let dataDayTwo = dataDays.list[14];
   let dayTwo = document.querySelector(".dayTwo");
   let dayTwoTemp = document.querySelector(".dayTwoTemp");
   let dayTwoHumidity = document.querySelector(".dayTwoHumidity");
 
-  let dataDayThree = dataDays.list[24];
   let dayThree = document.querySelector(".dayThree");
   let dayThreeTemp = document.querySelector(".dayThreeTemp");
   let dayThreeHumidity = document.querySelector(".dayThreeHumidity");
 
-  let dataDayFour = dataDays.list[30];
   let dayFour = document.querySelector(".dayFour");
   let dayFourTemp = document.querySelector(".dayFourTemp");
   let dayFourHumidity = document.querySelector(".dayFourHumidity");
 
-  let dataDayFive = dataDays.list[38];
   let dayFive = document.querySelector(".dayFive");
   let dayFiveTemp = document.querySelector(".dayFiveTemp");
   let dayFiveHumidity = document.querySelector(".dayFiveHumidity");
 
-  dayOne.innerHTML = moment.utc(dataDayOne["dt_txt"]).format("MM/DD/YYYY");
-  dayOneTemp.innerHTML = dataDayOne.main.temp;
-  dayOneHumidity.innerHTML = dataDayOne.main.humidity;
+  dayOne.innerHTML = dayOneTime;
+  dayOneTemp.innerHTML = dataDays.daily[1].temp.day;
+  dayOneHumidity.innerHTML = dataDays.daily[1].humidity;
 
-  dayTwo.innerHTML = moment.utc(dataDayTwo["dt_txt"]).format("MM/DD/YYYY");
-  dayTwoTemp.innerHTML = dataDayTwo.main.temp;
-  dayTwoHumidity.innerHTML = dataDayTwo.main.humidity;
+  dayTwo.innerHTML = dayTwoTime;
+  dayTwoTemp.innerHTML = dataDays.daily[2].temp.day;
+  dayTwoHumidity.innerHTML = dataDays.daily[2].humidity;
 
-  dayThree.innerHTML = moment.utc(dataDayThree["dt_txt"]).format("MM/DD/YYYY");
-  dayThreeTemp.innerHTML = dataDayThree.main.temp;
-  dayThreeHumidity.innerHTML = dataDayThree.main.humidity;
+  dayThree.innerHTML = dayThreeTime;
+  dayThreeTemp.innerHTML = dataDays.daily[3].temp.day;
+  dayThreeHumidity.innerHTML = dataDays.daily[3].humidity;
 
-  dayFour.innerHTML = moment.utc(dataDayFour["dt_txt"]).format("MM/DD/YYYY");
-  dayFourTemp.innerHTML = dataDayFour.main.temp;
-  dayFourHumidity.innerHTML = dataDayFour.main.humidity;
+  dayFour.innerHTML = dayFourTime;
+  dayFourTemp.innerHTML = dataDays.daily[4].temp.day;
+  dayFourHumidity.innerHTML = dataDays.daily[4].humidity;
 
-  dayFive.innerHTML = moment.utc(dataDayFive["dt_txt"]).format("MM/DD/YYYY");
-  dayFiveTemp.innerHTML = dataDayFive.main.temp;
-  dayFiveHumidity.innerHTML = dataDayFive.main.humidity;
+  dayFive.innerHTML = dayFiveTime;
+  dayFiveTemp.innerHTML = dataDays.daily[5].temp.day;
+  dayFiveHumidity.innerHTML = dataDays.daily[5].humidity;
 };
 
 // Display the current Weather
