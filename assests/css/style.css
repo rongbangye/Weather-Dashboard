@@ -93,6 +93,12 @@ body {
   font-size: 17px;
   font-weight: 400;
   color: #000000;
+  margin: 5px 0;
+}
+
+.currentUVIndex {
+  padding: 3px;
+  border-radius: 8px;
 }
 
 .cityWeahterTitle {
@@ -149,4 +155,16 @@ body {
 .main_dayForecast > span,
 .main_dayForecast > h6 {
   padding: 10px 0;
+}
+
+.background-red {
+  background-color: red;
+}
+
+.background-yellow {
+  background-color: yellow;
+}
+
+.background-green {
+  background-color: green;
 }
