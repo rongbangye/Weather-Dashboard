@@ -1,5 +1,16 @@
 let cities = [];
 
+const dt = 1598810400; // unix timestamp in seconds
+const timezone = 3600; // zone in seconds
+
+// moment.unix - Unix Timestamp (seconds)
+const dateTime = moment
+  .unix(dt)
+  .utc()
+  .add(timezone, "s");
+
+console.log(dateTime);
+
 const api = {
   key: "45706455bc2c4824123926c813998ea6",
   base: "https://api.openweathermap.org/data/2.5/"
@@ -22,6 +33,7 @@ const fetchWeather = searchCityInput => {
       return response.json();
     })
     .then(data => {
+      let timezone = data.timezone;
       let lon = data.coord.lon;
       let lat = data.coord.lat;
       // UV index: http://api.openweathermap.org/data/2.5/uvi?appid={appid}&lat={lat}&lon={lon}
@@ -33,19 +45,20 @@ const fetchWeather = searchCityInput => {
           return response.json();
         })
         .then(data => {
-          updateUVandDate(data);
+          updateUVandDate(timezone, data);
         });
 
       displayCurrentWeather(searchCityInput, data);
 
       // Fetch 5 Days Forcast
       fetch(
-        `${api.base}forecast?q=${searchCityInput}&units=imperial&appid=${api.key}`
+        `${api.base}forecast?appid=${api.key}&q=${searchCityInput}&count=10`
       )
         .then(response => {
           return response.json();
         })
         .then(dataDays => {
+          console.log(dataDays);
           displayDaysForcast(dataDays);
         });
     })
@@ -55,12 +68,17 @@ const fetchWeather = searchCityInput => {
 };
 
 // Display UV and Current Date
-const updateUVandDate = data => {
-  let now = moment.utc(data.date_iso).format("MM/DD/YYYY");
+const updateUVandDate = (timezone, data) => {
+  // referece on stackoverflow: https://stackoverflow.com/questions/62690963/how-can-i-get-the-current-time-using-timezone-offset-using-moment-js
+  const timezoneInMinutes = timezone / 60;
+  const currTime = moment()
+    .utcOffset(timezoneInMinutes)
+    .format("MM/DD/YYYY");
+
   let currentDate = document.querySelector(".currentDate");
   let currentUVIndex = document.querySelector(".currentUVIndex");
 
-  currentDate.innerHTML = `(${now})`;
+  currentDate.innerHTML = `(${currTime})`;
   if (data.value >= 8) {
     currentUVIndex.classList.remove("background-yellow");
     currentUVIndex.classList.remove("background-green");
@@ -81,27 +99,27 @@ const updateUVandDate = data => {
 
 // Display 5 Day Forcast
 const displayDaysForcast = dataDays => {
-  let dataDayOne = dataDays.list[5];
+  let dataDayOne = dataDays.list[6];
   let dayOne = document.querySelector(".dayOne");
   let dayOneTemp = document.querySelector(".dayOneTemp");
   let dayOneHumidity = document.querySelector(".dayOneHumidity");
 
-  let dataDayTwo = dataDays.list[13];
+  let dataDayTwo = dataDays.list[14];
   let dayTwo = document.querySelector(".dayTwo");
   let dayTwoTemp = document.querySelector(".dayTwoTemp");
   let dayTwoHumidity = document.querySelector(".dayTwoHumidity");
 
-  let dataDayThree = dataDays.list[21];
+  let dataDayThree = dataDays.list[24];
   let dayThree = document.querySelector(".dayThree");
   let dayThreeTemp = document.querySelector(".dayThreeTemp");
   let dayThreeHumidity = document.querySelector(".dayThreeHumidity");
 
-  let dataDayFour = dataDays.list[29];
+  let dataDayFour = dataDays.list[30];
   let dayFour = document.querySelector(".dayFour");
   let dayFourTemp = document.querySelector(".dayFourTemp");
   let dayFourHumidity = document.querySelector(".dayFourHumidity");
 
-  let dataDayFive = dataDays.list[37];
+  let dataDayFive = dataDays.list[38];
   let dayFive = document.querySelector(".dayFive");
   let dayFiveTemp = document.querySelector(".dayFiveTemp");
   let dayFiveHumidity = document.querySelector(".dayFiveHumidity");
