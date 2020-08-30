@@ -20,17 +20,17 @@ body {
 }
 
 .main {
-  background-color: #f3f5f6;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+  /* background-color: #f3f5f6; */
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px; */
   border-radius: 8px;
-  border: 1px solid white;
+  /* border: 1px solid white; */
   width: 880px;
   height: 410px;
   display: flex;
   justify-content: start;
   flex-direction: column;
   align-items: center;
-  box-shadow: rgba(129, 129, 129, 0.2) 0px 4px 9px;
+  /* box-shadow: rgba(129, 129, 129, 0.2) 0px 4px 9px; */
 }
 
 .main_container {
@@ -51,7 +51,6 @@ body {
 
 .main_title > h1 {
   color: rebeccapurple;
-  font-size: 32px;
   font-weight: 700;
 }
 
@@ -62,17 +61,27 @@ body {
 }
 
 .searchFrom {
+  width: 80%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 5px;
 }
 
-.main_searchCity h4 {
-  padding: 5px;
+.main_searchCityList {
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+
+  justify-content: start;
+  align-items: flex-start;
+  width: 80%;
 }
-.main_searchCityList h3 {
+
+.main_searchCityList button {
+  flex-basis: 100%;
   padding: 5px;
+  margin: 5px;
 }
 
 .main_rightContainer {
@@ -146,7 +155,7 @@ body {
   font-weight: 400;
   color: #000000;
   margin-right: 10px;
-  width: 20%;
+  width: 30%;
   border-radius: 8px;
   padding: 5px;
 }
@@ -154,7 +163,7 @@ body {
 .main_dayForecast > h3,
 .main_dayForecast > span,
 .main_dayForecast > h6 {
-  padding: 10px 0;
+  padding: 2px 0;
 }
 
 .background-red {
