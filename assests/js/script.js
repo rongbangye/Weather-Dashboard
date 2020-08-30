@@ -1,11 +1,5 @@
 let cities = [];
 
-const api = {
-  key: "45706455bc2c4824123926c813998ea6",
-  base: "https://api.openweathermap.org/data/2.5/",
-  baseImgURL: "http://openweathermap.org/img/wn/"
-};
-
 const getDateFormat = timeZoneOffSet => {
   // referece on stackoverflow: https://stackoverflow.com/questions/62690963/how-can-i-get-the-current-time-using-timezone-offset-using-moment-js
   // Convert TimeZone to to Current Date in MM/DD/YYYY
