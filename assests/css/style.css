@@ -51,7 +51,6 @@ body {
 
 .main_title > h1 {
   color: rebeccapurple;
-  font-size: 32px;
   font-weight: 700;
 }
 
@@ -62,17 +61,27 @@ body {
 }
 
 .searchFrom {
+  width: 80%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 5px;
 }
 
-.main_searchCity h4 {
-  padding: 5px;
+.main_searchCityList {
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+
+  justify-content: start;
+  align-items: flex-start;
+  width: 80%;
 }
-.main_searchCityList h3 {
+
+.main_searchCityList button {
+  flex-basis: 100%;
   padding: 5px;
+  margin: 5px;
 }
 
 .main_rightContainer {
@@ -146,7 +155,7 @@ body {
   font-weight: 400;
   color: #000000;
   margin-right: 10px;
-  width: 20%;
+  width: 30%;
   border-radius: 8px;
   padding: 5px;
 }

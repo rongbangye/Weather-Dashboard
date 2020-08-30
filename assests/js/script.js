@@ -12,7 +12,7 @@ const getDateFormat = timeZoneOffSet => {
   const timezoneInMinutes = timeZoneOffSet / 60;
   const currTime = moment()
     .utcOffset(timezoneInMinutes)
-    .format("MM/DD/YYYY");
+    .format("MM/DD/YYYY, h:mm:ss a");
 
   return currTime;
 };
@@ -65,7 +65,6 @@ const fetchWeather = searchCityInput => {
 /** Display Current Date Weather */
 
 const displayCurrentDateWeather = (searchCityInput, dataDays) => {
-  console.log(dataDays);
   let currentDate = document.querySelector(".currentDate");
   let currentUVIndex = document.querySelector(".currentUVIndex");
 
@@ -81,8 +80,12 @@ const displayCurrentDateWeather = (searchCityInput, dataDays) => {
   let currentWindSpeed = document.querySelector(".currentWindSpeed");
 
   if (searchCityInput) {
-    currentCityName.innerHTML = searchCityInput;
-    currentCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.daily[0].weather[0].icon}.png" alt="weather condition">`;
+    // Capitalize first letter of a string and refer to stackoverflow: https://stackoverflow.com/questions/42755664/capitalize-first-letter-of-each-word-in-js
+    currentCityName.innerHTML = searchCityInput.replace(/\b\w/g, c =>
+      c.toUpperCase()
+    );
+    console.log(dataDays);
+    currentCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.current.weather[0].icon}.png" alt="weather condition">`;
     currentTemperature.innerHTML = currentDayWeather.temp.day;
     currentHumidity.innerHTML = currentDayWeather.humidity;
     currentWindSpeed.innerHTML = currentDayWeather["wind_speed"];
@@ -183,6 +186,10 @@ const displayCurrentWeather = (searchCityInput, data) => {
   }
 };
 
+const myFunction = city => {
+  console.log(city);
+};
+
 // Display Search Cities History
 const renderMyCities = () => {
   document.querySelector("#searchCityInput").value = "";
@@ -193,7 +200,8 @@ const renderMyCities = () => {
       .slice(0)
       .reverse()
       .map(city => {
-        return `<h3>${city}</h3>`;
+        console.log(city);
+        return `<button class="btn btn-light" onclick="fetchWeather('${city}')">${city}</button>`;
       })
       .join("");
   }
@@ -210,10 +218,12 @@ const searchWeather = event => {
   event.preventDefault();
   let searchCityInput = document.querySelector("#searchCityInput").value;
 
-  cities.push(searchCityInput);
-  localStorage.setItem("mySearchCities", JSON.stringify(cities));
+  if (searchCityInput !== "") {
+    cities.push(searchCityInput);
+    localStorage.setItem("mySearchCities", JSON.stringify(cities));
 
-  renderMyCities();
+    renderMyCities();
+  }
 };
 
 // render cities that store at the local storage
