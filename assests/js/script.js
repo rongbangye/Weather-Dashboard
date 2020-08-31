@@ -84,7 +84,7 @@ const displayCurrentDateWeather = (searchCityInput, dataDays) => {
     currentCityName.innerHTML = searchCityInput.replace(/\b\w/g, c =>
       c.toUpperCase()
     );
-    console.log(dataDays);
+
     currentCondition.innerHTML = `<img src="${api.baseImgURL}${dataDays.current.weather[0].icon}.png" alt="weather condition">`;
     currentTemperature.innerHTML = currentDayWeather.temp.day;
     currentHumidity.innerHTML = currentDayWeather.humidity;
@@ -200,15 +200,16 @@ const renderMyCities = () => {
       .slice(0)
       .reverse()
       .map(city => {
-        console.log(city);
         return `<button class="btn btn-light" onclick="fetchWeather('${city}')">${city}</button>`;
       })
       .join("");
   }
 
-  let currentCity = myCities.length;
-  if (currentCity > 0) {
-    fetchWeather(myCities[currentCity - 1]);
+  if (myCities) {
+    let currentCity = myCities.length;
+    if (currentCity > 0) {
+      fetchWeather(myCities[currentCity - 1]);
+    }
   }
 };
 
